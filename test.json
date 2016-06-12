@@ -1,0 +1,262 @@
+{
+	"defaults" : [
+		{
+			"prototype" : "Misc",
+			"root" : "Item",
+			"name" : "Firearm",
+			"properties" : {
+				"weight" : 1,
+				"bullet" : 1
+			},
+			"degradables" : [
+				"bullet"
+			],
+			"reactions" : {
+				"rust" : {
+					"event" : {
+						"root" : "Event",
+						"prototype" : "Event",
+						"name" : "Rust firearm",
+						"description" : "Degrades bullet for <property>",
+						"negative" : 1,
+						"commands" : "change property : bullet : <negproduct>, rename : Rusty firearm"
+					}
+				}
+			}
+		},
+		{
+			"playable" : 0,
+			"inrandom" : 1,
+			"prototype" : "Troll",
+			"items" : [
+			],
+			"root" : "Actor",
+			"name" : "Troll",
+			"properties" : {
+				"strength" : 2,
+				"blood" : 30
+			},
+			"health" : [
+				"strength",
+				"blood"
+			],
+			"description" : "A <b>troll</b>"
+		},
+		{
+			"playable" : 0,
+			"inrandom" : 1,
+			"description" : "A <b>zombie</b>",
+			"prototype" : "Zombie",
+			"items" : [
+			],
+			"health" : [
+				"strength",
+				"blood"
+			],
+			"properties" : {
+				"strength" : 5,
+				"blood" : 15
+			},
+			"root" : "Actor",
+			"name" : "Zombie"
+		},
+		{
+			"playable" : 0,
+			"inrandom" : 1,
+			"prototype" : "Human",
+			"description" : "A <b>human</b>
+			"items" : [
+				{
+					"root" : "Item",
+					"prototype" : "Firearm",
+				}
+			],
+			"health" : [
+				"strength",
+				"blood"
+			],
+			"properties" : {
+				"strength" : 2,
+				"blood" : 20
+			},
+			"actions" : [
+				{
+					"root" : "Event",
+					"prototype" : "Event",
+					"name" : "Self defence",
+					"description" : "Defends itself with Firearm",
+					"command" : "defence : Firearm"
+				}
+			],
+			"reactions" : {
+				"sharp" : {
+					"event" : "Bleed",
+					"multiplier" : "strength"
+				}
+			},
+			"usercommands" : {
+				"use" : "Use an item (use : \<item\> : on : \<target\>)",
+			},
+			"root" : "Actor",
+			"name" : "Human"
+		}
+	],
+	"root" : "World",
+	"prototype" : "World",
+	"environments" : [
+		{
+			"root" : "Environment",
+			"exits" : {
+				"northeast" : {
+					"name" : "Enemy trenches",
+					"description" : "A path <b>northeast</b>"
+				}
+			}
+			"description" : "A damp jungle",
+			"items" : [
+				{
+					"root" : "Item",
+					"prototype" : "Misc",
+					"name" : "Magic spoon",
+					"inrandom" : 1
+				},
+				{
+					"root" : "Item",
+					"prototype" : "RANDOM"
+				},
+				{
+					"root" : "Item",
+					"prototype" : "Container"
+					"name" : "Treasure chest",
+					"description" : "A small <b><name></b>",
+					"items" : [
+						{
+							"root" : "Item",
+							"prototype" : "RANDOM"
+						},
+						{
+							"root" : "Item",
+							"prototype" : "Container"
+							"name" : "Backpack",
+							"description" : "A <b><name></b>",
+							"items" : [
+								{
+									"root" : "Item",
+									"prototype" : "Firearm"
+								}
+							]
+						}
+					]
+				}
+			],
+			"prototype" : "Exterior",
+			"name" : "Trenches",
+			"coordinates" : "14°45′N 107°55′E",
+			"actors" : [
+				{
+					"root" : "Actor",
+					"prototype" : "Troll",
+					"name" : "Giant troll",
+					"description" : "A fierce and angry <b>giant troll</b>",
+					"items" : [
+						{
+							"root" : "Item",
+							"prototype" : "Firearm",
+							"name" : "Smith & Wesson Of Greater Pain",
+							"inrandom" : 1,
+							"properties" : {
+								"weight" : 4
+							}
+							"reactions" : {
+								"rust" : {
+									"event" : {
+										"root" : "Event",
+										"prototype" : "Event",
+										"name" : "Rust firearm",
+										"description" : "Degrades bullet for <property>",
+										"negative" : 1,
+										"commands" : "change property : bullet : <negproduct>, rename : Rusty firearm"
+									}
+								}
+							}
+						}
+					],
+					"properties" : {
+						"strength" : 5,
+						"blood" : 100,
+						"fierceness" : 10
+					},
+					"virus" : [
+						{
+							"root" : "Actor",
+							"prototype" : "Zombie"
+						}
+					],
+					"actions" : [
+						{
+							"root" : "Event",
+							"prototype" : "Event",
+							"name" : "Self defence",
+							"description" : "Defends itself with firearm",
+							"command" : "defence : Firearm"
+						}
+					],
+					"reactions" : {
+						"sharp" : {
+							"event" : {
+								"root" : "Event",
+								"prototype" : "Event",
+								"name" : "Bleed",
+								"description" : "Bleeds for multiplier * property",
+								"command" : "change property : blood : <product>"
+							},
+							"multiplier" : "strength"
+						}
+					}
+				},
+				{
+					"root" : "Actor",
+					"prototype" : "RANDOM"
+				},
+				{
+					"root" : "Actor",
+					"prototype" : "Human",
+					"playable" : 1
+				},
+				{
+					"root" : "Actor",
+					"prototype" : "Giant troll",
+					"playable" : 1
+				}
+			],
+			"weather" : {
+				"obscuring" : 100,
+				"root" : "Weather",
+				"prototype" : "Weather",
+				"name" : "Overcast",
+				"properties" : {
+					"water" : 2,
+					"cold" : 10
+				}
+			}
+		},
+		{
+			"root" : "Environment",
+			"prototype" : "Trenches",
+			"name" : "Enemy trenches"
+			"weather" : {
+				"obscuring" : 0,
+				"root" : "Weather",
+				"prototype" : "Weather",
+				"name" : "Sunny",
+				"properties" : {
+					"water" : 0,
+					"heat" : 5
+				}
+			},
+			"coordinates" : "14°45′N 107°55′E"
+		}
+	],
+	"time" : 12,
+	"current environment" : "Trenches"
+}

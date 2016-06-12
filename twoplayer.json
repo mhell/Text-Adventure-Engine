@@ -1,0 +1,367 @@
+{
+	"defaults" : [
+		{
+			"prototype" : "Misc",
+			"root" : "Item",
+			"name" : "Shotgun",
+			"description" : "A deadly <b><name></b>",
+			"properties" : {
+				"weight" : 1,
+				"bullet" : 5
+			},
+			"degradables" : [
+				"bullet"
+			],
+			"reactions" : {
+				"rust" : {
+					"event" : {
+						"root" : "Event",
+						"prototype" : "Event",
+						"name" : "Rust weapon",
+						"description" : "Degrades the weapon",
+						"negative" : 1,
+						"commands" : "transform : Rusty shotgun : item"
+					}
+				}
+			}
+		},
+		{
+			"prototype" : "Misc",
+			"root" : "Item",
+			"name" : "Fork",
+			"inrandom" : 1
+			"properties" : {
+				"weight" : 2
+			}
+		},
+		{
+			"prototype" : "Misc",
+			"root" : "Item",
+			"name" : "Rusty shotgun",
+			"properties" : {
+				"rust" : 5
+			}
+		},
+		{
+			"playable" : 0,
+			"inrandom" : 1,
+			"prototype" : "Human",
+			"description" : "A <b><name></b>"
+			"health" : [
+				"strength",
+				"blood"
+			],
+			"properties" : {
+				"strength" : 2,
+				"blood" : 20
+				"markmanship" : 2
+			},
+			"actions" : [
+				{
+					"root" : "Event",
+					"prototype" : "Event",
+					"name" : "Self defence",
+					"description" : "Defends itself with Firearm",
+					"commands" : "defence : Firearm"
+				}
+			],
+			"reactions" : {
+				"sharp" : {
+					"event" : {
+						"root" : "Event",
+						"prototype" : "Event",
+						"name" : "Bleed",
+						"description" : "Bleeds for <property> * <multiplier>",
+						"negative" : 1,
+						"commands" : "change property : blood : <negproduct>"
+					},
+					"multiplier" : "strength"
+				},
+				"bullet" : {
+					"event" : "Bleed",
+					"multiplier" : "markmanship"
+				}
+			},
+			"usercommands" : {
+				"use" : "Use an item (use : \<item\> : on/with : \<target\>)",
+				"drop" : "Drop an item (drop : \<item\>/all)",
+				"pick up" : "Pick up an item (pick up : \<item\>)",
+				"give" : "Give an item (give : \<item\> : to : \<target\>)"
+			},
+			"root" : "Actor",
+			"name" : "Human"
+		}
+	],
+	"root" : "World",
+	"prototype" : "World",
+	"environments" : [
+		{
+			"root" : "Environment",
+			"exits" : {
+				"northeast" : {
+					"name" : "Kitchen",
+					"description" : "a path <b>northeast</b>",
+					"hidden" : 1
+				}
+			}
+			"items" : [
+				{
+					"root" : "Item",
+					"prototype" : "Environmental",
+					"name" : "Locked door"
+					"description" : "A <b><name></b> leading to the kitchen",
+					"reactions" : {
+						"pizza joint key" : {
+							"event" : {
+								"root" : "Event",
+								"prototype" : "Event",
+								"name" : "open door",
+								"description" : "Opens the door",
+								"commands" : "activate exit : northeast"
+							}
+						}
+					}
+				},
+				{
+					"root" : "Item",
+					"prototype" : "Container"
+					"name" : "Dead zombie",
+					"description" : "A rotting <b><name></b>",
+					"items" : [
+						{
+							"root" : "Item",
+							"prototype" : "Misc"
+							"name" : "Small key"
+							"description" : "A <b><name></b>",
+							"properties" : {
+								"pizza joint key" : 1
+							},
+						},
+						{
+							"root" : "Item",
+							"prototype" : "RANDOM"
+						},
+					]
+				},
+				{
+					"root" : "Item",
+					"prototype" : "Container"
+					"name" : "Cupboard",
+					"description" : "A small <b><name></b>",
+					"items" : [
+						{
+							"root" : "Item",
+							"prototype" : "RANDOM"
+						},
+					]
+				}
+			],
+			"prototype" : "Exterior",
+			"name" : "Pizza hut",
+			"description" : "A pizza joint",
+			"scene" : "It's <longtimestring> and <weatherdesc>. <environmentdesc> lay before <playablesdesc>. In the <environmentname> there is <itemsdesc>. <exitdesc>",
+			"coordinates" : "14°45′N 107°55′E",
+			"actors" : [
+				{
+					"root" : "Actor",
+					"prototype" : "Human",
+					"name" : "Tim",
+					"playable" : 1,
+					"description" : "<b><name></b>"
+				},
+				{
+					"root" : "Actor",
+					"prototype" : "Human",
+					"name" : "Rodriguez",
+					"playable" : 1,
+					"description" : "<b><name></b>",
+					"properties" : {
+						"markmanship" : 5,
+						"strength" : 5,
+						"blood" : 3
+					},
+					"items" : [
+						{
+							"prototype" : "Misc",
+							"root" : "Item",
+							"name" : "Spoon",
+							"inrandom" : 1,
+							"description" : "A plain <b><name></b>",
+							"properties" : {
+								"weight" : 1
+							},
+							"reactions" : {
+								"bullet" : {
+									"event" : {
+										"root" : "Event",
+										"prototype" : "Event",
+										"name" : "Magic spork Transform",
+										"description" : "Transforms into a Magic spork",
+										"negative" : 0,
+										"commands" : "transform : Magic spork : item"
+									}
+								}
+							}
+						}
+					]
+				}
+			],
+			"weather" : {
+				"obscuring" : 100,
+				"root" : "Weather",
+				"prototype" : "Weather",
+				"name" : "Overcast",
+				"description" : "The sky is shrouded in dark clouds",
+				"properties" : {
+					"water" : 5,
+					"cold" : 10
+				}
+			}
+		},
+		{
+			"root" : "Environment",
+			"prototype" : "Exterior",
+			"exits" : {
+				"west" : {
+					"name" : "Parking lot",
+					"description" : "a path <b>west</b>"
+					"hidden" : 0
+				},
+				"southwest" : {
+					"name" : "Pizza hut",
+					"description" : "a path <b>southwest</b>"
+					"hidden" : 0
+				}
+			}
+			"name" : "Kitchen",
+			"scene" : "It's <longtimestring> and <weatherdesc>. <environmentdesc> lay before <playablesdesc>. In the <environmentname> there is <itemsdesc>. <exitdesc>",
+			"description" : "A treacherous <name>",
+			"weather" : {
+				"obscuring" : 0,
+				"root" : "Weather",
+				"prototype" : "Weather",
+				"name" : "Sunny",
+				"description" : "It's a sunny and humid day",
+				"properties" : {
+					"water" : 0,
+					"heat" : 5
+				}
+			},
+			"coordinates" : "14°45′N 107°55′E",
+			"items" : [
+				{
+					"root" : "Item",
+					"prototype" : "Misc",
+					"inrandom" : 1,
+					"name" : "Rusty spork",
+					"description" : "A rusty old <b><name></b>",
+					"properties" : {
+						"rust" : 5
+					},
+				},
+			]
+		},
+		{
+			"root" : "Environment",
+			"prototype" : "Exterior",
+			"name" : "Parking lot",
+			"scene" : "It's <longtimestring> and <weatherdesc>. <environmentdesc> lay before <playablesdesc>. In the <environmentname> there is <itemsdesc>. <exitdesc>",
+			"description" : "A treacherous <name>",
+			"exits" : {
+				"north" : {
+					"name" : "Schoolbus",
+					"description" : "a path <b>northeast</b>"
+					"hidden" : 1
+				},
+				"east" : {
+					"name" : "Kitchen",
+					"description" : "a path <b>east</b>"
+					"hidden" : 0
+				}
+			}
+			"weather" : {
+				"obscuring" : 0,
+				"root" : "Weather",
+				"prototype" : "Weather",
+				"name" : "Sunny",
+				"description" : "It's a sunny and humid day",
+				"properties" : {
+					"water" : 0,
+					"heat" : 5
+				}
+			},
+			"coordinates" : "14°45′N 107°55′E",
+			"items" : [
+				{
+					"root" : "Item",
+					"prototype" : "Misc"
+					"name" : "Baseball bat"
+					"description" : "A <b><name></b>",
+					"properties" : {
+						"wood" : 1
+					},
+				},
+				{
+					"root" : "Item",
+					"prototype" : "Environmental",
+					"name" : "locked schoolbus door"
+					"description" : "A <b><name></b> leading to the schoolbus",
+					"reactions" : {
+						"wood" : {
+							"event" : {
+								"root" : "Event",
+								"prototype" : "Event",
+								"name" : "open door",
+								"description" : "Opens the door",
+								"commands" : "activate exit : north"
+							}
+						}
+					}
+				},
+			]
+		},
+		{
+			"root" : "Environment",
+			"prototype" : "Exterior",
+			"name" : "Schoolbus",
+			"scene" : "It's <longtimestring> and <weatherdesc>. <environmentdesc> lay before <playablesdesc>. In the <environmentname> there is <itemsdesc>. <exitdesc>",
+			"description" : "A treacherous <name>",
+			"exits" : {
+				"south" : {
+					"name" : "Parking lot",
+					"description" : "a path <b>south</b>"
+					"hidden" : 0
+				}
+			}
+			"weather" : {
+				"obscuring" : 0,
+				"root" : "Weather",
+				"prototype" : "Weather",
+				"name" : "Sunny",
+				"description" : "It's a sunny and humid day",
+				"properties" : {
+					"water" : 0,
+					"heat" : 5
+				}
+			},
+			"coordinates" : "14°45′N 107°55′E",
+			"items" : [
+				{
+					"root" : "Item",
+					"prototype" : "Container"
+					"name" : "Dead schoolbus driver",
+					"description" : "A <b><name></b>",
+					"items" : [
+						{
+							"root" : "Item",
+							"prototype" : "Shotgun"
+						},
+					]
+				}
+			]
+		}
+
+	],
+	"time" : 12,
+	"current environment" : "Pizza hut"
+}

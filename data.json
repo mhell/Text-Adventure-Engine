@@ -1,0 +1,329 @@
+{
+	"defaults" : [
+		{
+			"prototype" : "Misc",
+			"root" : "Item",
+			"name" : "Firearm",
+			"properties" : {
+				"weight" : 1,
+				"bullet" : 1
+			},
+			"degradables" : [
+				"bullet"
+			],
+			"reactions" : {
+				"rust" : {
+					"event" : {
+						"root" : "Event",
+						"prototype" : "Event",
+						"name" : "Rust firearm",
+						"description" : "Degrades bullet for <property>",
+						"negative" : 1,
+						"commands" : "change property : bullet : <negproduct>, rename : Rusty firearm"
+					}
+				}
+			}
+		},
+		{
+			"playable" : 0,
+			"inrandom" : 1,
+			"prototype" : "Troll",
+			"items" : [
+			],
+			"root" : "Actor",
+			"name" : "Troll",
+			"properties" : {
+				"strength" : 2,
+				"blood" : 30
+			},
+			"health" : [
+				"strength",
+				"blood"
+			],
+			"description" : "A <b><name></b>",
+			"reactions" : {
+				"bullet" : {
+					"event" : {
+						"root" : "Event",
+						"prototype" : "Event",
+						"name" : "Bleed",
+						"description" : "Bleeds for <property> * <multiplier>",
+						"negative" : 1,
+						"commands" : "change property : blood : <negproduct>"
+					},
+					"multiplier" : "markmanship"
+				}
+			}
+		},
+		{
+			"playable" : 0,
+			"inrandom" : 1,
+			"prototype" : "Zombie",
+			"description" : "A <b><name></b>",
+			"items" : [
+			],
+			"health" : [
+				"strength",
+				"blood"
+			],
+			"properties" : {
+				"strength" : 5,
+				"blood" : 15
+			},
+			"actions" : [
+				{
+					"root" : "Event",
+					"prototype" : "Event",
+					"name" : "Search brains",
+					"description" : "Searches for free laying brains to eat",
+					"commands" : "search & consume : brains"
+				},
+				{
+					"root" : "Event",
+					"prototype" : "Event",
+					"name" : "Hunt brains",
+					"description" : "Hunts for brains to eat with teeths",
+					"commands" : "hunt & consume : brains : teeth"
+				},
+			],
+			"reactions" : {
+				"bullet" : {
+					"event" : "Bleed",
+					"multiplier" : "markmanship"
+				}
+			}
+			"root" : "Actor",
+			"name" : "Zombie"
+		},
+		{
+			"playable" : 0,
+			"inrandom" : 1,
+			"prototype" : "Human",
+			"description" : "A <b><name></b>"
+			"items" : [
+				{
+					"root" : "Item",
+					"prototype" : "Firearm",
+					"inrandom" : 1,
+					"name" : "Handgun",
+					"description" : "A <b><name></b>",
+				}
+			],
+			"health" : [
+				"strength",
+				"blood"
+			],
+			"properties" : {
+				"strength" : 2,
+				"blood" : 20
+			},
+			"actions" : [
+				{
+					"root" : "Event",
+					"prototype" : "Event",
+					"name" : "Self defence",
+					"description" : "Defends itself with Firearm",
+					"commands" : "defence : Firearm"
+				}
+			],
+			"reactions" : {
+				"sharp" : {
+					"event" : "Bleed",
+					"multiplier" : "strength"
+				},
+				"bullet" : {
+					"event" : "Bleed",
+					"multiplier" : "markmanship"
+				}
+			},
+			"usercommands" : {
+				"use" : "Use an item (use : \<item\> : on/with : \<target\>)",
+				"drop" : "Drop an item (drop : \<item\>/all)",
+				"pick up" : "Pick up an item (pick up : \<item\>)",
+				"give" : "Give an item (give : \<item\> : to : \<target\>)"
+			},
+			"root" : "Actor",
+			"name" : "Human"
+		}
+	],
+	"root" : "World",
+	"prototype" : "World",
+	"environments" : [
+		{
+			"root" : "Environment",
+			"exits" : {
+				"northeast" : {
+					"name" : "Enemy trenches",
+					"description" : "A path <b>northeast</b>"
+				}
+			}
+			"items" : [
+				{
+					"root" : "Item",
+					"prototype" : "Misc",
+					"inrandom" : 1,
+					"name" : "Magic spork",
+					"description" : "A rusty old <b><name></b>",
+					"properties" : {
+						"rust" : 5
+					},
+				},
+				{
+					"root" : "Item",
+					"prototype" : "RANDOM"
+				},
+				{
+					"root" : "Item",
+					"prototype" : "Container"
+					"name" : "Treasure chest",
+					"description" : "A small <b><name></b>",
+					"items" : [
+						{
+							"root" : "Item",
+							"prototype" : "RANDOM"
+						},
+						{
+							"root" : "Item",
+							"prototype" : "Container"
+							"name" : "Backpack",
+							"description" : "A <b><name></b>",
+							"items" : [
+								{
+									"root" : "Item",
+									"prototype" : "RANDOM"
+								}
+							]
+						}
+					]
+				}
+			],
+			"prototype" : "Exterior",
+			"name" : "Jungle",
+			"description" : "A dark and damp jungle",
+			"scene" : "It's <longtimestring> and <weatherdesc>. <environmentdesc> lay before <playablesdesc>. In the <environmentname> lies <itemsdesc>. <exitdesc>. <enemiesdesc> appoaches.",
+			"coordinates" : "14°45′N 107°55′E",
+			"actors" : [
+				{
+					"root" : "Actor",
+					"prototype" : "Troll",
+					"name" : "Giant troll",
+					"description" : "A fierce and angry <b><name></b>",
+					"items" : [
+						{
+							"root" : "Item",
+							"prototype" : "Firearm",
+							"inrandom" : 1,
+							"name" : "Smith & Wesson Of Greater Pain",
+							"description" : "A formidable <b><name></b>",
+							"properties" : {
+								"weight" : 4,
+								"bullet" : 10
+							}
+						},
+						{
+							"root" : "Item",
+							"prototype" : "Smith & Wesson Of Greater Pain"
+						}
+					],
+					"properties" : {
+						"strength" : 5,
+						"blood" : 50
+					},
+					"virus" : [
+						{
+							"root" : "Actor",
+							"prototype" : "Zombie"
+						}
+					]
+				},
+				{
+					"root" : "Actor",
+					"prototype" : "Zombie",
+					"name" : "Zombie Tom",
+					"playable" : 0,
+					"description" : "<b><name></b>"
+				},
+				{
+					"root" : "Actor",
+					"prototype" : "RANDOM",
+					"name" : "Tim",
+					"playable" : 1,
+					"description" : "<b><name></b>"
+				},
+				{
+					"root" : "Actor",
+					"prototype" : "Human",
+					"name" : "Rodriguez",
+					"playable" : 1,
+					"description" : "<b><name></b>",
+					"properties" : {
+						"markmanship" : 5,
+						"strength" : 5,
+						"blood" : 30
+					},
+					"items" : [
+						{
+							"root" : "Item",
+							"prototype" : "Magic spork"
+						},
+						{
+							"prototype" : "Misc",
+							"root" : "Item",
+							"name" : "Spoon",
+							"inrandom" : 1,
+							"description" : "A plain <b><name></b>",
+							"properties" : {
+								"weight" : 1
+							},
+							"reactions" : {
+								"bullet" : {
+									"event" : {
+										"root" : "Event",
+										"prototype" : "Event",
+										"name" : "Magic spork Transform",
+										"description" : "Transforms into a Magic spork",
+										"negative" : 0,
+										"commands" : "transform : Magic spork : item"
+									}
+								}
+							}
+						},
+					],
+				}
+			],
+			"weather" : {
+				"obscuring" : 100,
+				"root" : "Weather",
+				"prototype" : "Weather",
+				"name" : "Overcast",
+				"description" : "The sky is shrouded in dark clouds",
+				"properties" : {
+					"water" : 5,
+					"cold" : 10
+				}
+			}
+		},
+		{
+			"root" : "Environment",
+			"prototype" : "Jungle",
+			"name" : "Enemy trenches"
+			"description" : "Treacherous <name>",
+			"weather" : {
+				"obscuring" : 0,
+				"root" : "Weather",
+				"prototype" : "Weather",
+				"name" : "Sunny",
+				"description" : "It's a sunny and humid day",
+				"properties" : {
+					"water" : 0,
+					"heat" : 5
+				}
+			},
+			"coordinates" : "14°45′N 107°55′E",
+			"items" : [
+			]
+		}
+	],
+	"time" : 12,
+	"current environment" : "Jungle"
+}
